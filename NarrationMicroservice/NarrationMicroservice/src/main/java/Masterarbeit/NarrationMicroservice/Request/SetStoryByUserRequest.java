@@ -8,7 +8,7 @@ import javax.validation.constraints.NotNull;
 @AllArgsConstructor(access = AccessLevel.PUBLIC)
 @NoArgsConstructor
 @ToString
-public class SetStoryByUserRequestRequest {
+public class SetStoryByUserRequest {
 
     @Getter
     @Setter

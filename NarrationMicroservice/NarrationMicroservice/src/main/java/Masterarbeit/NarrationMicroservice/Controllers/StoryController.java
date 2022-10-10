@@ -25,13 +25,23 @@ public class StoryController {
             return ResponseEntity.badRequest().body(result.getAllErrors().toString());
         } else {
             storyService.setStory(setStoryRequest);
-            return ResponseEntity.status(HttpStatus.OK).body("Mission got saved successfully");
+            return ResponseEntity.status(HttpStatus.OK).body("Story got saved successfully");
         }
     }
 
     @GetMapping("/story/get/{id}")
     public Story getStory(@PathVariable Long id) {
         return storyService.getStory(id);
+    }
+
+    @GetMapping("/story/getStoryHTMLCode/{storyId}/{userId}")
+    public String getStoryHTMLCode(@PathVariable Long storyId, @PathVariable Long userId) {
+        return storyService.getStoryHTMLCode(storyId,userId);
+    }
+
+    @GetMapping("/story/getStoryHTMLCode/{narrationId}/{Nr}/{userId}")
+    public String getStoryHTMLCode(@PathVariable Long narrationId, @PathVariable int Nr, @PathVariable Long userId) {
+        return storyService.getStoryHTMLCode(narrationId,Nr,userId);
     }
 
     @GetMapping("/story/getByNarrationId/{narrationId}")

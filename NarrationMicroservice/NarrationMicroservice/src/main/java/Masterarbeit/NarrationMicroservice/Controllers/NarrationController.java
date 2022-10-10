@@ -47,10 +47,6 @@ public class NarrationController {
         return narrationService.getNarrationByName(name);
     }
 
-
-
-
-
     @PutMapping("/narration/update/{id}")
     public Narration updateNarration(@PathVariable Long id, @RequestBody Narration narration) {
         return narrationService.updateNarration(narration, id);

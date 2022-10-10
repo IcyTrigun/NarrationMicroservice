@@ -5,12 +5,14 @@ import Masterarbeit.NarrationMicroservice.Enteties.Story;
 import Masterarbeit.NarrationMicroservice.Exceptions.ResourceNotFoundException;
 import Masterarbeit.NarrationMicroservice.HelperClasses.CopyPropertiesOfEntity;
 import Masterarbeit.NarrationMicroservice.Repositories.StoryRepository;
+import Masterarbeit.NarrationMicroservice.Request.SetStoryByUserRequest;
 import Masterarbeit.NarrationMicroservice.Request.SetStoryRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class StoryService {
@@ -20,6 +22,7 @@ public class StoryService {
 
     @Autowired
     private NarrationService narrationService;
+
 
     private CopyPropertiesOfEntity copyPropertiesOfEntity;
 
@@ -45,7 +48,7 @@ public class StoryService {
         story.setImagePath(setStoryRequest.getImagePath());
         story.setName(setStoryRequest.getName());
         story.setNr(setStoryRequest.getNr());
-        story.setText(setStoryRequest.getText());
+        story.setStory(setStoryRequest.getText());
         story.setLast(setStoryRequest.isLast());
         return storyRepository.save(story);
     }
@@ -67,4 +70,34 @@ public class StoryService {
     }
 
 
+    public List<Story> getStoriesOfNarrationSorted(Long narrationId){
+        return storyRepository.getStoriesOfNarrationSorted(narrationId);
+    }
+
+    public String getStoryHTMLCode(Long storyId,Long userId) {
+        Story story = getStory(storyId);
+        return createStoryHTMLCode(story,userId);
+    }
+
+    public String getStoryHTMLCode(Long narrationId,int Nr,Long userId) {
+        Story story = getStoryByNarrationIdAndNr(narrationId,Nr);
+        return createStoryHTMLCode(story,userId);
+    }
+
+    public String createStoryHTMLCode(Story story,Long userId){
+        return " <div style=\"background-image:url('"+ story.getImagePath()+"');\" class=\"narrationElement\" id=\""+story.getId()+"\">\n" +
+                "        <span onclick=\"storyFinishedLogic ('"+ story.getId()+ "'"+userId+")\" class=\"close\">&times;</span>\n" +
+                "        <div class=\"narrationTitle\">" + story.getName() +"  </div>\n" +
+                "        <div class=\"narrationNavText\">"+ story.getStory()+"</div>\n" +
+                "        </div>";
+    }
+
+    public Story getStoryByNarrationIdAndNr(Long narrationId,int Nr){
+        Optional<Story> storyOptional = storyRepository.getStoryByNarrationIdAndNr(narrationId,Nr);
+        if (storyOptional.isPresent()) {
+            return storyOptional.get();
+        } else {
+            throw new ResourceNotFoundException("no Story found at narrationId " + narrationId+ " and Nr "+Nr);
+        }
+    }
 }

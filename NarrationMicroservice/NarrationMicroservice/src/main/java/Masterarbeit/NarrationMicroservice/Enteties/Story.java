@@ -30,7 +30,7 @@ public class Story {
     @Setter
     @NotNull
     @NotEmpty
-    private String text;
+    private String story;
 
     @Getter
     @Setter
@@ -44,6 +44,7 @@ public class Story {
     @NotNull
     @Min(1)
     private int nr;
+
 
     @Getter
     @Setter

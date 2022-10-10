@@ -38,6 +38,18 @@ public class StoryByUser {
     @Getter
     @Setter
     @NotNull
+    @Min(1)
+    private Long narrationId;
+
+    @Getter
+    @Setter
+    @NotNull
+    @Min(1)
+    private int storyNr;
+
+    @Getter
+    @Setter
+    @NotNull
     private boolean canBeSeen;
 
     @Getter
